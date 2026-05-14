@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,11 +41,13 @@ public class BagdauletAskarStudentController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     public ResponseEntity<BagdauletAskarStudentResponse> create(@Valid @RequestBody BagdauletAskarStudentRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(studentService.create(request));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     public ResponseEntity<BagdauletAskarStudentResponse> update(
             @PathVariable Long id,
             @Valid @RequestBody BagdauletAskarStudentRequest request) {
@@ -52,6 +55,7 @@ public class BagdauletAskarStudentController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         studentService.delete(id);
         return ResponseEntity.noContent().build();

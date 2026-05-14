@@ -10,6 +10,7 @@ import com.example.finalproject100.repository.BagdauletAskarCourseRepository;
 import com.example.finalproject100.repository.BagdauletAskarEnrollmentRepository;
 import com.example.finalproject100.repository.BagdauletAskarStudentRepository;
 import com.example.finalproject100.service.BagdauletAskarEnrollmentService;
+import com.example.finalproject100.service.BagdauletAskarNotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class BagdauletAskarEnrollmentServiceImpl implements BagdauletAskarEnroll
     private final BagdauletAskarEnrollmentRepository enrollmentRepository;
     private final BagdauletAskarStudentRepository studentRepository;
     private final BagdauletAskarCourseRepository courseRepository;
+    private final BagdauletAskarNotificationService notificationService;
 
     @Override
     public List<BagdauletAskarEnrollmentResponse> getAll() {
@@ -57,7 +59,9 @@ public class BagdauletAskarEnrollmentServiceImpl implements BagdauletAskarEnroll
         enrollment.setStudent(student);
         enrollment.setCourse(course);
         enrollment.setStatus("ACTIVE");
-        return BagdauletAskarEnrollmentMapper.toResponse(enrollmentRepository.save(enrollment));
+        BagdauletAskarEnrollment saved = enrollmentRepository.save(enrollment);
+        notificationService.sendEnrollmentNotification(student.getEmail(), course.getCourseName());
+        return BagdauletAskarEnrollmentMapper.toResponse(saved);
     }
 
     @Override

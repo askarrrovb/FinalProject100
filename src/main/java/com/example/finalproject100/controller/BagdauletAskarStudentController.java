@@ -2,6 +2,7 @@ package com.example.finalproject100.controller;
 
 import com.example.finalproject100.dto.request.BagdauletAskarStudentRequest;
 import com.example.finalproject100.dto.response.BagdauletAskarStudentResponse;
+import com.example.finalproject100.service.BagdauletAskarReportService;
 import com.example.finalproject100.service.BagdauletAskarStudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 public class BagdauletAskarStudentController {
 
     private final BagdauletAskarStudentService studentService;
+    private final BagdauletAskarReportService reportService;
 
     @GetMapping
     public ResponseEntity<List<BagdauletAskarStudentResponse>> getAll() {
@@ -59,5 +61,15 @@ public class BagdauletAskarStudentController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         studentService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/report")
+    public ResponseEntity<String> getReport(@PathVariable Long id) {
+        try {
+            String report = reportService.generateStudentReport(id).get();
+            return ResponseEntity.ok(report);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Failed to generate report");
+        }
     }
 }

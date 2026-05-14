@@ -29,6 +29,7 @@ public class BagdauletAskarCourseServiceImpl implements BagdauletAskarCourseServ
     private final BagdauletAskarDepartmentRepository departmentRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<BagdauletAskarCourseResponse> getAll() {
         log.info("Fetching all courses");
         return courseRepository.findAll()
@@ -38,6 +39,7 @@ public class BagdauletAskarCourseServiceImpl implements BagdauletAskarCourseServ
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BagdauletAskarCourseResponse getById(Long id) {
         log.info("Fetching course with id: {}", id);
         BagdauletAskarCourse course = courseRepository.findById(id)
@@ -93,6 +95,7 @@ public class BagdauletAskarCourseServiceImpl implements BagdauletAskarCourseServ
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BagdauletAskarCourseResponse> getByTeacherId(Long teacherId) {
         return courseRepository.findByTeacherId(teacherId)
                 .stream()

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -22,6 +23,7 @@ public class BagdauletAskarReportService {
     private final BagdauletAskarGradeRepository gradeRepository;
 
     @Async("taskExecutor")
+    @Transactional(readOnly = true)
     public CompletableFuture<String> generateStudentReport(Long studentId) {
         log.info("Generating report for student id: {}", studentId);
         BagdauletAskarStudent student = studentRepository.findById(studentId)

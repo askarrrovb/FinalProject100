@@ -30,6 +30,7 @@ public class BagdauletAskarEnrollmentServiceImpl implements BagdauletAskarEnroll
     private final BagdauletAskarNotificationService notificationService;
 
     @Override
+    @Transactional(readOnly = true)
     public List<BagdauletAskarEnrollmentResponse> getAll() {
         return enrollmentRepository.findAll().stream()
                 .map(BagdauletAskarEnrollmentMapper::toResponse)
@@ -37,6 +38,7 @@ public class BagdauletAskarEnrollmentServiceImpl implements BagdauletAskarEnroll
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BagdauletAskarEnrollmentResponse getById(Long id) {
         BagdauletAskarEnrollment enrollment = enrollmentRepository.findById(id)
                 .orElseThrow(() -> new BagdauletAskarResourceNotFoundException("Enrollment not found with id: " + id));
@@ -83,6 +85,7 @@ public class BagdauletAskarEnrollmentServiceImpl implements BagdauletAskarEnroll
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BagdauletAskarEnrollmentResponse> getByStudentId(Long studentId) {
         return enrollmentRepository.findByStudentId(studentId).stream()
                 .map(BagdauletAskarEnrollmentMapper::toResponse)

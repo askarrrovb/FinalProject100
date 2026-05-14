@@ -29,6 +29,7 @@ public class BagdauletAskarGradeServiceImpl implements BagdauletAskarGradeServic
     private final BagdauletAskarCourseRepository courseRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<BagdauletAskarGradeResponse> getAll() {
         return gradeRepository.findAll().stream()
                 .map(BagdauletAskarGradeMapper::toResponse)
@@ -36,6 +37,7 @@ public class BagdauletAskarGradeServiceImpl implements BagdauletAskarGradeServic
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BagdauletAskarGradeResponse getById(Long id) {
         BagdauletAskarGrade grade = gradeRepository.findById(id)
                 .orElseThrow(() -> new BagdauletAskarResourceNotFoundException("Grade not found with id: " + id));
@@ -81,6 +83,7 @@ public class BagdauletAskarGradeServiceImpl implements BagdauletAskarGradeServic
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BagdauletAskarGradeResponse> getByStudentId(Long studentId) {
         return gradeRepository.findByStudentId(studentId).stream()
                 .map(BagdauletAskarGradeMapper::toResponse)
